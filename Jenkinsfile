@@ -1,8 +1,7 @@
 pipeline {
-    agent any // Sử dụng bất kỳ agent nào có sẵn
+    agent any
 
     environment {
-        // Thiết lập biến môi trường cho nhánh
         BRANCH_NAME = 'main'
     }
 
@@ -20,9 +19,14 @@ pipeline {
                 echo "Clone git repository from branch: ${BRANCH_NAME}"
             }
         }
+        stage('Install NodeJS') {
+            steps {
+                sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
+                sh 'apt-get install -y nodejs'
+            }
+        }
         stage('Build') {
             steps {
-                // Đảm bảo rằng Node.js và npm đã được cài đặt trên Jenkins agent hoặc máy chủ
                 sh 'npm install'
                 sh 'npm run build'
             }
@@ -32,13 +36,11 @@ pipeline {
                 sh 'npm test'
             }
         }
-        // Thêm các giai đoạn khác như 'Deploy' tùy vào nhu cầu của bạn
     }
 
     post {
         always {
             echo 'Cleaning up...'
-            // Lệnh dọn dẹp nếu cần
         }
     }
 }
