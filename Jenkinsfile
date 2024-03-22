@@ -20,21 +20,15 @@ pipeline {
             }
         }
         stage('Install NodeJS') {
-            script {
-                if (sh(script: 'node --version', returnStatus: true) != 0) {
-                    echo 'Node.js is not installed. Installing...'
-                    sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
-                    sh 'apt-get install -y nodejs'
-                } else {
-                    echo 'Node.js is already installed'
-                }
+            steps {
+                sh 'curl -sL https://deb.nodesource.com/setup_14.x | bash -'
+                sh 'apt-get install -y nodejs'
             }
         }
         stage('Build') {
             steps {
                 sh 'npm install'
                 sh 'npm run build'
-                sh 'npm run start:dev'
             }
         }
         stage('Test') {
