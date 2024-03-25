@@ -5,7 +5,7 @@ pipeline {
         BRANCH_NAME = 'main'
     }
 
-    tool {
+    tools {
         nodejs = 'nodejs'
     }
 
